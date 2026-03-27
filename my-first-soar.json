@@ -1,0 +1,184 @@
+{
+  "schema_version": 28,
+  "standard_lib_version": 89,
+  "action_runtime_version": 72,
+  "name": "My First SOAR",
+  "description": null,
+  "guid": "25d9ae293317bdee6dcdbfeae42d1794",
+  "slug": "my_first_soar",
+  "agents": [
+    {
+      "type": "Agents::HTTPRequestAgent",
+      "name": "HTTP Request Action",
+      "disabled": false,
+      "description": null,
+      "guid": "739c547f8ed42027433fc52d02fb1f1a",
+      "origin_story_identifier": "cloud:a200c43f6c772713d4f28cbc84da9b90:25d9ae293317bdee6dcdbfeae42d1794",
+      "options": {
+        "url": "https://www.virustotal.com/api/v3/domains/<<entrada_de_dados.body.dominio>>",
+        "content_type": "application_json",
+        "method": "get",
+        "payload": {},
+        "headers": "={\"x-apikey\":\"d9e69d5edc55321563343c575c81d44f41b232a5bc54b3a45f971f2d0693f8a9\\n\\n\"}"
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null,
+      "schedule": null
+    },
+    {
+      "type": "Agents::TriggerAgent",
+      "name": "Trigger Action",
+      "disabled": false,
+      "description": null,
+      "guid": "a85b99c223d92d51054639e0ecab2336",
+      "origin_story_identifier": "cloud:a200c43f6c772713d4f28cbc84da9b90:25d9ae293317bdee6dcdbfeae42d1794",
+      "options": {
+        "rules": [
+          {
+            "path": "=http_request_action.body.data.attributes.last_analysis_stats.malicious",
+            "type": "field>value",
+            "value": "0"
+          }
+        ]
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null
+    },
+    {
+      "type": "Agents::WebhookAgent",
+      "name": "entrada_de_dados",
+      "disabled": false,
+      "description": null,
+      "guid": "6eb06f94f2a87298e097ee36e94024b0",
+      "origin_story_identifier": "cloud:a200c43f6c772713d4f28cbc84da9b90:25d9ae293317bdee6dcdbfeae42d1794",
+      "options": {
+        "path": "dd7b8d7960aeb88165e7206ce83e0e41",
+        "secret": "f17d893ded84d8133a5cccbc4d118fea",
+        "verbs": "get,post"
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null
+    },
+    {
+      "type": "Agents::EmailAgent",
+      "name": "Send Email Action",
+      "disabled": false,
+      "description": null,
+      "guid": "f4f8831e062b93abb3dae84fa1f3c3d1",
+      "origin_story_identifier": "cloud:a200c43f6c772713d4f28cbc84da9b90:25d9ae293317bdee6dcdbfeae42d1794",
+      "options": {
+        "recipients": [],
+        "reply_to": "",
+        "sender_name": "Gabriel da Silva",
+        "subject": "⚠️ ALERTA DE SEGURANÇA: Domínio Malicioso Detectado - <<entrada_de_dados.body.dominio>>\n",
+        "body": "Relatório de Ameaça - Automação Tines/VirusTotal\n\nDomínio analisado: <<entrada_de_dados.body.dominio>>Status: Malicioso 🛑 Número de detecções: <<http_request_action.body.data.attributes.last_analysis_stats.malicious>>\nLink para análise completa: > https://www.virustotal.com/",
+        "advanced_html": true,
+        "cc": [],
+        "bcc": [],
+        "sender_address": ""
+      },
+      "reporting": {
+        "time_saved_value": 0,
+        "time_saved_unit": "minutes"
+      },
+      "monitoring": {
+        "monitor_all_events": false,
+        "monitor_failures": false,
+        "monitor_no_events_emitted": null
+      },
+      "template": {
+        "created_from_template_guid": null,
+        "created_from_template_version": null,
+        "template_tags": []
+      },
+      "width": null,
+      "schedule": null
+    }
+  ],
+  "diagram_notes": [],
+  "links": [
+    {
+      "source": 0,
+      "receiver": 1
+    },
+    {
+      "source": 1,
+      "receiver": 3
+    },
+    {
+      "source": 2,
+      "receiver": 0
+    }
+  ],
+  "diagram_layout": "{\"6eb06f94f2a87298e097ee36e94024b0\":[165,75],\"739c547f8ed42027433fc52d02fb1f1a\":[165,195],\"a85b99c223d92d51054639e0ecab2336\":[165,315],\"f4f8831e062b93abb3dae84fa1f3c3d1\":[165,420]}",
+  "story_library_metadata": {},
+  "monitor_failures": false,
+  "synchronous_webhooks_enabled": false,
+  "integrations": [],
+  "sections": [],
+  "parent_only_send_to_story": false,
+  "send_to_story_timeout_enabled": false,
+  "send_to_story_timeout_duration_seconds": null,
+  "keep_events_for": 86400,
+  "reporting_status": true,
+  "send_to_story_enabled": false,
+  "entry_agent_guid": null,
+  "exit_agent_guids": [],
+  "api_entry_action_guids": [],
+  "api_exit_action_guids": [],
+  "send_to_story_access": null,
+  "send_to_story_access_source": 0,
+  "send_to_story_skill_use_requires_confirmation": true,
+  "pages": [],
+  "tags": [],
+  "time_saved_unit": "minutes",
+  "time_saved_value": 0,
+  "origin_story_identifier": "cloud:a200c43f6c772713d4f28cbc84da9b90:25d9ae293317bdee6dcdbfeae42d1794",
+  "recipients": [],
+  "integration_product": null,
+  "integration_vendor": null,
+  "llm_product_instructions": "",
+  "start_reference": null,
+  "send_to_stories": [],
+  "exported_at": "2026-03-27T23:11:42Z",
+  "icon": ":house_buildings:"
+}
